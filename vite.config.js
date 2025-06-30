@@ -6,7 +6,7 @@ import { presetUno, presetAttributify, presetIcons } from 'unocss';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: '/pdf-toolkit-app/', 
+  base: '/pdf-toolkit-app/', // <--- CRITICAL FIX: Base path must match your GitHub repository name
   plugins: [
     react(),
     UnoCSS({
