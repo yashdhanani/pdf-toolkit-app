@@ -257,9 +257,14 @@ const MergeTool = () => {
 
     // Callback for when files are dropped or selected
     const onDrop = useCallback(acceptedFiles => {
-        // Add new files, filtering out duplicates by name
-        setFiles(prev => [...prev, ...acceptedFiles].filter((file, index, self) => self.findIndex(f => f.name === file.name) === index));
-        setStatus({ type: '', message: '' }); // Clear previous status messages
+        // Add new files, filtering out out-of-scope files
+        const pdfFiles = acceptedFiles.filter(file => file.type === 'application/pdf');
+        if (pdfFiles.length !== acceptedFiles.length) {
+            setStatus({ type: 'error', message: 'Only PDF files are accepted for merging.' });
+        } else {
+            setFiles(prev => [...prev, ...pdfFiles].filter((file, index, self) => self.findIndex(f => f.name === file.name) === index));
+            setStatus({ type: '', message: '' }); // Clear previous status messages
+        }
     }, []);
 
     // Handles the PDF merging process
@@ -912,6 +917,7 @@ const UnlockPdfTool = () => {
                         id="password-unlock"
                         value={password}
                         onChange={e => setPassword(e.target.value)}
+                        placeholder="Leave blank if not encrypted"
                         className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                     />
                 </div>
