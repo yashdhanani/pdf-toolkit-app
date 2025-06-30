@@ -3,14 +3,14 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://yashdhanani.github.io/pdf-toolkit/",
+  "homepage": "https://yashdhanani.github.io/pdf-toolkit-app/", 
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "predeploy": "npm run build",  
-    "deploy": "gh-pages -d dist"   
+    "predeploy": "npm run build", 
+    "deploy": "gh-pages -d dist" 
   },
   "dependencies": {
     "file-saver": "^2.0.5",
@@ -34,6 +34,6 @@
     "globals": "^16.2.0",
     "unocss": "^66.3.2",
     "vite": "^7.0.0",
-    "gh-pages": "^6.1.1"  <-- ENSURE THIS IS HERE IN devDependencies
+    "gh-pages": "^6.1.1" 
   }
 }
