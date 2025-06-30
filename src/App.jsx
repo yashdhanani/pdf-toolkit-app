@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { saveAs } from 'file-saver';
+import { saveAs } from 'file-saver'; // Corrected import syntax: 'from' instead of '='
 // Corrected import: 'Signature' changed to 'SignatureIcon'
 import { ArrowLeft, UploadCloud, File as FileIcon, Merge, Split, FileArchive, FileText, FileType, FileImage, Edit, Scan, Lock, Unlock, Droplet, RotateCcw, Replace, Braces, ScanText, GitCompareArrows, Crop, ListOrdered, ShieldQuestion, Signature as SignatureIcon, Pencil, Trash2 } from 'lucide-react';
 
@@ -501,7 +501,6 @@ const WatermarkTool = () => {
             const blob = new Blob([watermarkedPdfBytes], { type: 'application/pdf' });
             saveAs(blob, `watermarked_${file.name}`); // Trigger download
             setStatus({ type: 'success', message: 'Watermark added successfully!' });
-
         } catch (e) {
             setStatus({ type: 'error', message: `An error occurred during watermarking: ${e.message}` });
         }
@@ -644,7 +643,6 @@ const PdfToJpgTool = () => {
             const page = await pdf.getPage(pageNum);
             const viewport = page.getViewport({ scale: 1.5 }); // Define viewport for rendering (scale for higher quality)
             
-            const canvas = canvasRef.current;
             const context = canvas.getContext('2d');
             canvas.height = viewport.height;
             canvas.width = viewport.width;
@@ -914,7 +912,6 @@ const UnlockPdfTool = () => {
                         id="password-unlock"
                         value={password}
                         onChange={e => setPassword(e.target.value)}
-                        placeholder="Leave blank if not encrypted"
                         className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                     />
                 </div>
@@ -1058,10 +1055,10 @@ const PageNumberTool = () => {
         }
         setStatus({ type: 'loading', message: 'Adding page numbers...' });
         try {
-            const { PDFDocument, rgb, StandardFonts } = window.PDFLib;
+            const { PDFDocument } = window.PDFLib;
             const pdfBytes = await file.arrayBuffer();
             const pdfDoc = await PDFDocument.load(pdfBytes);
-            const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica); // Embed a standard font
+            const helveticaFont = await pdfDoc.embedFont(window.PDFLib.StandardFonts.Helvetica); // Use window.PDFLib.StandardFonts
 
             const pages = pdfDoc.getPages(); // Get all pages in the document
             // Iterate through each page to add page numbers
@@ -1073,7 +1070,7 @@ const PageNumberTool = () => {
                     y: 20,             // Position from bottom
                     size: 12,
                     font: helveticaFont,
-                    color: rgb(0.5, 0.5, 0.5), // Gray color
+                    color: window.PDFLib.rgb(0.5, 0.5, 0.5), // Use window.PDFLib.rgb
                 });
             }
 
@@ -1169,7 +1166,7 @@ const OcrPdfTool = () => {
                     ],
                 };
                 
-                const apiKey = ""; // API key is handled by the environment for Canvas
+                const apiKey = ""; // If you want to use models other than gemini-2.0-flash or imagen-3.0-generate-002, provide an API key here. Otherwise, leave this as-is.
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
                 
                 // Make the API call to Gemini
@@ -1186,7 +1183,7 @@ const OcrPdfTool = () => {
                 const result = await response.json();
                 
                 // Extract text from the API response
-                if (result.candidates && result.candidates.length > 0 && result.candidates[0].content && result.candidates[0].content.parts.length > 0) {
+                if (result.candidates && result.candidates.length > 0 && result.candidates[0].content && result.candidates[0].content.parts && result.candidates[0].content.parts.length > 0) {
                     const text = result.candidates[0].content.parts[0].text;
                     fullText += `--- Page ${i} ---\n${text}\n\n`; // Append text with page separator
                 } else {
@@ -1355,24 +1352,24 @@ const EditPdfTool = () => {
         setStatus({ type: 'loading', message: 'Editing PDF...' });
 
         try {
-            const { PDFDocument, StandardFonts, rgb } = window.PDFLib;
+            const { PDFDocument } = window.PDFLib;
             const pdfBytes = await file.arrayBuffer();
             const pdfDoc = await PDFDocument.load(pdfBytes);
-            const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica); // Embed a standard font
-            
-            const firstPage = pdfDoc.getPages()[0]; // Get the first page
-            const { height } = firstPage.getSize(); // Get page dimensions to position text
+            const helveticaFont = await pdfDoc.embedFont(window.PDFLib.StandardFonts.Helvetica); // Use window.PDFLib.StandardFonts
+
+            const firstPage = pdfDoc.getPages()[0];
+            const { height } = firstPage.getSize();
 
             firstPage.drawText(textToAdd, {
-                x: 60, // X position
-                y: height - 60, // Y position (from bottom, so subtract from height)
+                x: 60,
+                y: height - 60,
                 font: helveticaFont,
                 size: 24,
-                color: rgb(0.95, 0.1, 0.1), // Red color
+                color: window.PDFLib.rgb(0.95, 0.1, 0.1), // Use window.PDFLib.rgb
             });
             
             const editedPdfBytes = await pdfDoc.save();
-            saveAs(new Blob([editedPdfBytes], { type: 'application/pdf' }), `edited_${file.name}`); // Trigger download
+            saveAs(new Blob([editedPdfBytes], { type: 'application/pdf' }), `edited_${file.name}`);
             setStatus({ type: 'success', message: 'PDF edited successfully!' });
             
         } catch(e) {
@@ -1576,10 +1573,10 @@ const AdvancedSignPdfTool = () => {
         setStatus({ type: 'loading', message: 'Applying fields to PDF...'});
 
         try {
-            const { PDFDocument, StandardFonts, rgb } = window.PDFLib;
+            const { PDFDocument } = window.PDFLib;
             const existingPdfBytes = await pdfFile.arrayBuffer();
             const pdfDoc = await PDFDocument.load(existingPdfBytes); // Load the original PDF
-            const font = await pdfDoc.embedFont(StandardFonts.Helvetica); // Embed a font for drawing text
+            const font = await pdfDoc.embedFont(window.PDFLib.StandardFonts.Helvetica); // Embed a font for drawing text
 
             const pages = pdfDoc.getPages(); // Get all pages
             
@@ -1602,7 +1599,7 @@ const AdvancedSignPdfTool = () => {
                     y: pdfY + 5, // Add a small padding from the Rnd box bottom edge
                     font,
                     size: 12, // Fixed font size for simplicity
-                    color: rgb(0.1, 0.1, 0.4) // Dark blue color
+                    color: window.PDFLib.rgb(0.1, 0.1, 0.4) // Dark blue color
                 });
             }
 
