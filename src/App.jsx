@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { saveAs } from 'file-saver'; // Corrected import syntax: 'from' instead of '='
+import { saveAs } from 'file-saver';
 // Corrected import: 'Signature' changed to 'SignatureIcon'
 import { ArrowLeft, UploadCloud, File as FileIcon, Merge, Split, FileArchive, FileText, FileType, FileImage, Edit, Scan, Lock, Unlock, Droplet, RotateCcw, Replace, Braces, ScanText, GitCompareArrows, Crop, ListOrdered, ShieldQuestion, Signature as SignatureIcon, Pencil, Trash2 } from 'lucide-react';
 
@@ -257,14 +257,9 @@ const MergeTool = () => {
 
     // Callback for when files are dropped or selected
     const onDrop = useCallback(acceptedFiles => {
-        // Add new files, filtering out out-of-scope files
-        const pdfFiles = acceptedFiles.filter(file => file.type === 'application/pdf');
-        if (pdfFiles.length !== acceptedFiles.length) {
-            setStatus({ type: 'error', message: 'Only PDF files are accepted for merging.' });
-        } else {
-            setFiles(prev => [...prev, ...pdfFiles].filter((file, index, self) => self.findIndex(f => f.name === file.name) === index));
-            setStatus({ type: '', message: '' }); // Clear previous status messages
-        }
+        // Add new files, filtering out duplicates by name
+        setFiles(prev => [...prev, ...acceptedFiles].filter((file, index, self) => self.findIndex(f => f.name === file.name) === index));
+        setStatus({ type: '', message: '' }); // Clear previous status messages
     }, []);
 
     // Handles the PDF merging process
@@ -506,6 +501,7 @@ const WatermarkTool = () => {
             const blob = new Blob([watermarkedPdfBytes], { type: 'application/pdf' });
             saveAs(blob, `watermarked_${file.name}`); // Trigger download
             setStatus({ type: 'success', message: 'Watermark added successfully!' });
+
         } catch (e) {
             setStatus({ type: 'error', message: `An error occurred during watermarking: ${e.message}` });
         }
@@ -648,6 +644,7 @@ const PdfToJpgTool = () => {
             const page = await pdf.getPage(pageNum);
             const viewport = page.getViewport({ scale: 1.5 }); // Define viewport for rendering (scale for higher quality)
             
+            const canvas = canvasRef.current;
             const context = canvas.getContext('2d');
             canvas.height = viewport.height;
             canvas.width = viewport.width;
@@ -1061,10 +1058,10 @@ const PageNumberTool = () => {
         }
         setStatus({ type: 'loading', message: 'Adding page numbers...' });
         try {
-            const { PDFDocument } = window.PDFLib;
+            const { PDFDocument, rgb, StandardFonts } = window.PDFLib;
             const pdfBytes = await file.arrayBuffer();
             const pdfDoc = await PDFDocument.load(pdfBytes);
-            const helveticaFont = await pdfDoc.embedFont(window.PDFLib.StandardFonts.Helvetica); // Use window.PDFLib.StandardFonts
+            const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica); // Embed a standard font
 
             const pages = pdfDoc.getPages(); // Get all pages in the document
             // Iterate through each page to add page numbers
@@ -1076,7 +1073,7 @@ const PageNumberTool = () => {
                     y: 20,             // Position from bottom
                     size: 12,
                     font: helveticaFont,
-                    color: window.PDFLib.rgb(0.5, 0.5, 0.5), // Use window.PDFLib.rgb
+                    color: rgb(0.5, 0.5, 0.5), // Gray color
                 });
             }
 
@@ -1172,7 +1169,7 @@ const OcrPdfTool = () => {
                     ],
                 };
                 
-                const apiKey = ""; // If you want to use models other than gemini-2.0-flash or imagen-3.0-generate-002, provide an API key here. Otherwise, leave this as-is.
+                const apiKey = ""; // API key is handled by the environment for Canvas
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
                 
                 // Make the API call to Gemini
@@ -1189,7 +1186,7 @@ const OcrPdfTool = () => {
                 const result = await response.json();
                 
                 // Extract text from the API response
-                if (result.candidates && result.candidates.length > 0 && result.candidates[0].content && result.candidates[0].content.parts && result.candidates[0].content.parts.length > 0) {
+                if (result.candidates && result.candidates.length > 0 && result.candidates[0].content && result.candidates[0].content.parts.length > 0) {
                     const text = result.candidates[0].content.parts[0].text;
                     fullText += `--- Page ${i} ---\n${text}\n\n`; // Append text with page separator
                 } else {
@@ -1358,24 +1355,24 @@ const EditPdfTool = () => {
         setStatus({ type: 'loading', message: 'Editing PDF...' });
 
         try {
-            const { PDFDocument } = window.PDFLib;
+            const { PDFDocument, StandardFonts, rgb } = window.PDFLib;
             const pdfBytes = await file.arrayBuffer();
             const pdfDoc = await PDFDocument.load(pdfBytes);
-            const helveticaFont = await pdfDoc.embedFont(window.PDFLib.StandardFonts.Helvetica); // Use window.PDFLib.StandardFonts
-
-            const firstPage = pdfDoc.getPages()[0];
-            const { height } = firstPage.getSize();
+            const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica); // Embed a standard font
+            
+            const firstPage = pdfDoc.getPages()[0]; // Get the first page
+            const { height } = firstPage.getSize(); // Get page dimensions to position text
 
             firstPage.drawText(textToAdd, {
-                x: 60,
-                y: height - 60,
+                x: 60, // X position
+                y: height - 60, // Y position (from bottom, so subtract from height)
                 font: helveticaFont,
                 size: 24,
-                color: window.PDFLib.rgb(0.95, 0.1, 0.1), // Use window.PDFLib.rgb
+                color: rgb(0.95, 0.1, 0.1), // Red color
             });
             
             const editedPdfBytes = await pdfDoc.save();
-            saveAs(new Blob([editedPdfBytes], { type: 'application/pdf' }), `edited_${file.name}`);
+            saveAs(new Blob([editedPdfBytes], { type: 'application/pdf' }), `edited_${file.name}`); // Trigger download
             setStatus({ type: 'success', message: 'PDF edited successfully!' });
             
         } catch(e) {
@@ -1579,10 +1576,10 @@ const AdvancedSignPdfTool = () => {
         setStatus({ type: 'loading', message: 'Applying fields to PDF...'});
 
         try {
-            const { PDFDocument } = window.PDFLib;
+            const { PDFDocument, StandardFonts, rgb } = window.PDFLib;
             const existingPdfBytes = await pdfFile.arrayBuffer();
             const pdfDoc = await PDFDocument.load(existingPdfBytes); // Load the original PDF
-            const font = await pdfDoc.embedFont(window.PDFLib.StandardFonts.Helvetica); // Embed a font for drawing text
+            const font = await pdfDoc.embedFont(StandardFonts.Helvetica); // Embed a font for drawing text
 
             const pages = pdfDoc.getPages(); // Get all pages
             
@@ -1605,7 +1602,7 @@ const AdvancedSignPdfTool = () => {
                     y: pdfY + 5, // Add a small padding from the Rnd box bottom edge
                     font,
                     size: 12, // Fixed font size for simplicity
-                    color: window.PDFLib.rgb(0.1, 0.1, 0.4) // Dark blue color
+                    color: rgb(0.1, 0.1, 0.4) // Dark blue color
                 });
             }
 
