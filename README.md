@@ -1,118 +1,144 @@
-📄 PDF Toolkit: Your All-in-One Browser-Based PDF Utility
-✨ About the Project
-The PDF Toolkit is a modern, responsive web application designed to simplify common PDF manipulation tasks directly within your browser. Built with React and Vite, and styled with the lightweight UnoCSS framework, this tool prioritizes user privacy by performing all core PDF operations client-side. This means your sensitive documents never leave your device.
+# 📄 PDF Toolkit: Your All-in-One Browser-Based PDF Utility
+
+## ✨ About the Project
+
+The **PDF Toolkit** is a modern, responsive web application designed to simplify common PDF manipulation tasks directly within your browser. Built with **React** and **Vite**, and styled with the lightweight **UnoCSS** framework, this tool prioritizes user privacy by performing all core PDF operations client-side. This means your sensitive documents never leave your device.
 
 From combining multiple files to extracting text with artificial intelligence, the PDF Toolkit provides a seamless and efficient experience for managing your PDF documents.
 
-🚀 Live Demo
-Experience the PDF Toolkit live on GitHub Pages:
-https://yashdhanani.github.io/pdf-toolkit-app/
+## 🚀 Live Demo
 
-💡 Features
+Experience the PDF Toolkit live on GitHub Pages:
+[**https://yashdhanani.github.io/pdf-toolkit-app/**](https://www.google.com/search?q=https://yashdhanani.github.io/pdf-toolkit-app/)
+
+## 💡 Features
+
 The PDF Toolkit offers a comprehensive suite of tools to handle your PDF needs:
 
-Merge PDF: Combine multiple PDF documents into a single file.
+* **Merge PDF:** Combine multiple PDF documents into a single file.
 
-Split PDF: Extract specific pages or ranges of pages from a PDF.
+* **Split PDF:** Extract specific pages or ranges of pages from a PDF.
 
-Compress PDF (Placeholder): (Future: Reduce the file size of your PDF for easier sharing.)
+* **Compress PDF (Placeholder):** (Future: Reduce the file size of your PDF for easier sharing.)
 
-PDF to Word (Placeholder): (Future: Convert PDF documents into editable Word files.)
+* **PDF to Word (Placeholder):** (Future: Convert PDF documents into editable Word files.)
 
-PDF to JPG: Convert individual PDF pages into high-quality JPG image files.
+* **PDF to JPG:** Convert individual PDF pages into high-quality JPG image files.
 
-JPG to PDF: Convert one or more JPG images into a single PDF document.
+* **JPG to PDF:** Convert one or more JPG images into a single PDF document.
 
-Edit PDF: Add simple text annotations or content to your PDF pages.
+* **Edit PDF:** Add simple text annotations or content to your PDF pages.
 
-OCR PDF: Utilize AI to recognize and extract text from scanned PDF documents.
+* **OCR PDF:** Utilize AI to recognize and extract text from scanned PDF documents.
 
-Sign PDF: Easily add your signature, initials, or date fields to PDF documents interactively.
+* **Sign PDF:** Easily add your signature, initials, or date fields to PDF documents interactively.
 
-Watermark PDF: Stamp custom text or images as watermarks over your PDF pages.
+* **Watermark PDF:** Stamp custom text or images as watermarks over your PDF pages.
 
-Rotate PDF: Rotate all or specific pages within your PDF document by various angles.
+* **Rotate PDF:** Rotate all or specific pages within your PDF document by various angles.
 
-Organize PDF: Reorder or delete pages within your PDF document.
+* **Organize PDF:** Reorder or delete pages within your PDF document.
 
-Protect PDF: Add password protection to secure your PDF files.
+* **Protect PDF:** Add password protection to secure your PDF files.
 
-Unlock PDF: Remove password protection from encrypted PDF documents.
+* **Unlock PDF:** Remove password protection from encrypted PDF documents.
 
-HTML to PDF (Placeholder): (Future: Convert web pages into PDF documents.)
+* **HTML to PDF (Placeholder):** (Future: Convert web pages into PDF documents.)
 
-Compare PDF: Visually compare two PDF files and highlight the differences.
+* **Compare PDF:** Visually compare two PDF files and highlight the differences.
 
-Page Numbers: Automatically add sequential page numbers to your PDF document.
+* **Page Numbers:** Automatically add sequential page numbers to your PDF document.
 
-🛠️ Technologies Used
-Frontend Framework: React
+## 🛠️ Technologies Used
 
-Build Tool: Vite
+* **Frontend Framework:** [React](https://react.dev/)
 
-Styling: UnoCSS (Utility-First CSS Engine)
+* **Build Tool:** [Vite](https://vitejs.dev/)
 
-PDF Manipulation:
+* **Styling:** [UnoCSS](https://unocss.dev/) (Utility-First CSS Engine)
 
-PDF-Lib (for creating, modifying, and saving PDFs)
+* **PDF Manipulation:**
 
-PDF.js (for rendering PDF pages to canvas)
+    * [PDF-Lib](https://pdf-lib.js.org/) (for creating, modifying, and saving PDFs)
 
-File Handling: React Dropzone, FileSaver.js
+    * [PDF.js](https://mozilla.github.io/pdf.js/) (for rendering PDF pages to canvas)
 
-Icons: Lucide React
+* **File Handling:** [React Dropzone](https://react-dropzone.js.org/), [FileSaver.js](https://github.com/eligrey/FileSaver.js/)
 
-Image Comparison: Pixelmatch
+* **Icons:** [Lucide React](https://lucide.dev/icons/)
 
-Draggable/Resizable Elements: React RND
+* **Image Comparison:** [Pixelmatch](https://github.com/mapbox/pixelmatch)
 
-AI Integration: Google Gemini API (for OCR functionality)
+* **Draggable/Resizable Elements:** [React RND](https://github.com/bokuweb/react-rnd)
 
-Deployment: GitHub Pages
+* **AI Integration:** [Google Gemini API](https://ai.google.dev/models/gemini) (for OCR functionality)
 
-🚀 Getting Started
+* **Deployment:** [GitHub Pages](https://pages.github.com/)
+
+## 🚀 Getting Started
+
 Follow these steps to get a local copy of the project up and running on your machine.
 
-Prerequisites
-Node.js (LTS version recommended)
+### Prerequisites
 
-npm (comes with Node.js)
+* [Node.js](https://nodejs.org/en/download/) (LTS version recommended)
 
-Git
+* [npm](https://www.npmjs.com/get-npm) (comes with Node.js)
 
-Installation
-Clone the repository:
+* [Git](https://git-scm.com/downloads)
 
-git clone https://github.com/yashdhanani/pdf-toolkit-app.git
-cd pdf-toolkit-app
+### Installation
 
-Install dependencies:
+1.  **Clone the repository:**
 
-npm install
+    ```
+    git clone [https://github.com/yashdhanani/pdf-toolkit-app.git](https://github.com/yashdhanani/pdf-toolkit-app.git)
+    cd pdf-toolkit-app
 
-Running Locally
-Start the development server:
+    ```
 
-npm run dev
+2.  **Install dependencies:**
 
-This will open the application in your browser at http://localhost:5173/ (or another available port).
+    ```
+    npm install
 
-🌐 Deployment to GitHub Pages
-This project is configured for easy deployment to GitHub Pages using gh-pages.
+    ```
 
-Ensure your homepage in package.json is set correctly:
+### Running Locally
 
-"homepage": "https://yashdhanani.github.io/pdf-toolkit-app/",
+1.  **Start the development server:**
 
-(This should already be set if you followed the setup guide.)
+    ```
+    npm run dev
 
-Run the deploy script:
+    ```
 
-npm run deploy
+    This will open the application in your browser at `http://localhost:5173/` (or another available port).
 
-This command will build your application and push the dist folder content to the gh-pages branch of your repository. Your site will then be live at the homepage URL.
+## 🌐 Deployment to GitHub Pages
 
-📁 Project Structure
+This project is configured for easy deployment to GitHub Pages using `gh-pages`.
+
+1.  **Ensure your `homepage` in `package.json` is set correctly:**
+
+    ```
+    "homepage": "[https://yashdhanani.github.io/pdf-toolkit-app/](https://yashdhanani.github.io/pdf-toolkit-app/)",
+
+    ```
+
+    (This should already be set if you followed the setup guide.)
+
+2.  **Run the deploy script:**
+
+    ```
+    npm run deploy
+
+    ```
+
+    This command will build your application and push the `dist` folder content to the `gh-pages` branch of your repository. Your site will then be live at the `homepage` URL.
+
+## 📁 Project Structure
+
 pdf-toolkit-app/
 ├── public/                 # Static assets (e.g., vite.svg)
 ├── src/
@@ -127,11 +153,15 @@ pdf-toolkit-app/
 ├── README.md               # This file
 └── vite.config.js          # Vite configuration (includes UnoCSS plugin)
 
-🤝 Contributing
+
+## 🤝 Contributing
+
 Contributions are welcome! If you have suggestions for improvements, new features, or bug fixes, please open an issue or submit a pull request.
 
-📄 License
-This project is licensed under the ISC License - see the LICENSE file for details.
+## 📄 License
 
-👨‍💻 Developer
-Developed by Yash Dhanani
+This project is licensed under the ISC License - see the [LICENSE](https://www.google.com/search?q=LICENSE) file for details.
+
+## 👨‍💻 Developer
+
+Developed by **Yash Dhanani**
